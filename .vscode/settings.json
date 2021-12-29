@@ -1,0 +1,20 @@
+{
+	"files.associations": {
+		"sdl.h": "c",
+		"stdio.h": "c",
+		"game_loop.h": "c",
+		"wiring.h": "c"
+	},
+	"C_Cpp.default.cStandard": "c17",
+	"C_Cpp.default.includePath": [
+		"{workspaceFolder}/subprojects",
+		"usr/local/include",
+		"usr/lib",
+		"usr/include",
+                "/usr/include/SDL2/"
+
+	],
+	"cSpell.words": [
+		"Arvanitis"
+	]
+}
