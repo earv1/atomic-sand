@@ -7,6 +7,8 @@
 
 struct AtomicSandWiring {
   SDL_Renderer *renderer;
+  SDL_Texture * texture;
 };
+
 
 #endif  // SRC_LIB_WIRING_H_

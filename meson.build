@@ -8,4 +8,7 @@ sdl2_dep = dependency('sdl2')
 
 subdir('src')
 
+dir_base = meson.current_source_dir()
+dir_include = join_paths(dir_base, 'include')
+
 executable('run_atomic_sand', all_files, dependencies: [sdl2_dep])

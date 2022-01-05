@@ -3,7 +3,9 @@
 		"sdl.h": "c",
 		"stdio.h": "c",
 		"game_loop.h": "c",
-		"wiring.h": "c"
+		"wiring.h": "c",
+		"pixel_dynamics_simulator.h": "c",
+		"simulation_structures.h": "c"
 	},
 	"C_Cpp.default.cStandard": "c17",
 	"C_Cpp.default.includePath": [

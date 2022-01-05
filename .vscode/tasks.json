@@ -1,0 +1,9 @@
+{
+	"version": "2.0.0",
+	"tasks": [{
+	    "label": "ninja_build",
+	    "command": "ninja", // Could be any other shell command
+	    "args": ["-C", "builddir"],
+	    "type": "shell"
+	}]
+    }

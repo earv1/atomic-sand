@@ -1,15 +1,13 @@
 // Copyright 2020-2030 Emmanuel Arvanitis
 
 #include <SDL.h>
+#include <signal.h>
+#include <stdbool.h>
 #include <stdio.h>
-#include  <signal.h>
-#include  <stdlib.h>
-#include "lib/wiring.h"
+#include <stdlib.h>
+
 #include "game_loop/game_loop.h"
-
-
-
-
+#include "lib/wiring.h"
 
 // Screen dimension constants
 const int SCREEN_WIDTH = 640;
@@ -17,63 +15,82 @@ const int SCREEN_HEIGHT = 480;
 
 void INThandler(int);
 
+#define WIN_WIDTH 160
+#define WIN_HEIGHT 144
 
 //
 // main is where all program execution starts
 //
 int main(int argc, char **argv) {
-     signal(SIGINT, INThandler);
+  signal(SIGINT, INThandler);
+  if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+    return 1;
+  }
 
-    // The window we'll be rendering to
-    SDL_Window *window = NULL;
-    SDL_Renderer *renderer = NULL;
+  // The window we'll be rendering to
+  // SDL_Window *window = NULL;
+  // SDL_Renderer *renderer = NULL;
+  // create SDL window
+  SDL_Window *window = SDL_CreateWindow(
+      "sdl2_pixelbuffer", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+      WIN_WIDTH * 4, WIN_HEIGHT * 4, SDL_WINDOW_RESIZABLE);
 
-    // The surface contained by the window
-    // SDL_Surface* screenSurface = NULL;
+  if (window == NULL) {
+    SDL_Log("Unable to create window: %s", SDL_GetError());
+    return 1;
+  }
 
-    // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
-    SDL_CreateWindowAndRenderer(
-      SCREEN_WIDTH, SCREEN_HEIGHT, 0, &window, &renderer);
+  // create renderer
+  // SDL_Renderer *renderer = SDL_CreateRenderer(
+  //     window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+  SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, 0);
+  if (renderer == NULL) {
+    SDL_Log("Unable to create renderer: %s", SDL_GetError());
+    return 1;
+  }
+  SDL_RenderSetLogicalSize(renderer, WIN_WIDTH, WIN_HEIGHT);
 
-    // DoStuffWithRendererAndMaybeDelete(gameObjectArray);
-    // DoMoreStuffWithRendererAndMaybeDelete(gameObjectArray);
+  // Initialize SDL
+  // DoStuffWithRendererAndMaybeDelete(gameObjectArray);
+  // DoMoreStuffWithRendererAndMaybeDelete(gameObjectArray);
 
-    // Manual garbage collection :-p
-    // removeUnneededGameObjects(gameObjArray)
+  // Manual garbage collection :-p
+  // removeUnneededGameObjects(gameObjArray)
 
-    if (window == NULL) {
-        printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
-        return 1;
-    }
-    // Get window surface
-    // screenSurface = SDL_GetWindowSurface( window );
+  if (window == NULL) {
+    printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+    return 1;
+  }
 
-    struct AtomicSandWiring wiring = { .renderer = renderer};
-    game_loop(&wiring);
+  SDL_Texture *texture =
+      SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888,
+                        SDL_TEXTUREACCESS_STREAMING, WIN_WIDTH, WIN_HEIGHT);
+  // Get window surface
+  // screenSurface = SDL_GetWindowSurface( window );
 
-    // Update the surface
-    SDL_UpdateWindowSurface(window);
+  struct AtomicSandWiring wiring = {.renderer = renderer, .texture = texture};
+  game_loop(&wiring);
 
-    // Wait two seconds
-    SDL_Delay(2000);
+  // Update the surface
+  SDL_UpdateWindowSurface(window);
 
-    SDL_DestroyWindow(window);
-    window = NULL;
-    // TODO(mano) check this
-    SDL_DestroyRenderer(renderer);
-    renderer = NULL;
+  // Wait two seconds
+  SDL_Delay(2000);
 
-    // Quit SDL subsystems
-    SDL_Quit();
+  SDL_DestroyWindow(window);
+  window = NULL;
+  // TODO(Emmanuel) check this
+  SDL_DestroyRenderer(renderer);
+  renderer = NULL;
+
+  // Quit SDL subsystems
+  SDL_Quit();
 
   return 0;
 }
 
-void  INThandler(int sig) {
-    signal(sig, SIG_IGN);
-    exit(0);
+void INThandler(int sig) {
+  signal(sig, SIG_IGN);
+  exit(0);
 }
