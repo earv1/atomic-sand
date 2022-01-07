@@ -63,7 +63,8 @@ void tick(struct AtomicSandWiring *wiring, struct Game_State *game_state) {
   // TODO(Emmanuel) change to bottom first search
   for (int x = 0; x < WIN_WIDTH; x++) {
     for (int y = WIN_HEIGHT; y >= 0; y--) {
-      simulate_sand_particle(WIN_WIDTH, x, y, simulated_particles_ptr);
+      simulate_sand_particle(WIN_WIDTH, WIN_HEIGHT, x, y,
+                             simulated_particles_ptr);
     }
   }
 
@@ -91,22 +92,28 @@ void game_loop(struct AtomicSandWiring *wiring) {
   test_particle.particle_type =
       PARTICLE_TYPE_SAND;
 
+  struct Game_State game_state;
+
   struct Simulated_Particle simulated_particle_array[WIN_WIDTH * WIN_HEIGHT] = {
       0};
 
-  simulated_particle_array[0] = test_particle;
-  simulated_particle_array[WIN_WIDTH * 2 + WIN_WIDTH/2] = test_particle;
-
-  struct Game_State game_state;
-  game_state.simulated_particles = simulated_particle_array;
-
+  int randomNum = 0;
   while (1) {
+    randomNum = rand() % 5;
+    if (randomNum == 1) {
+      simulated_particle_array[0] = test_particle;
+    } else if (randomNum == 2) {
+      simulated_particle_array[WIN_WIDTH * 2 + WIN_WIDTH / 2] = test_particle;
+    }
+
+
+  game_state.simulated_particles = simulated_particle_array;
     tick(wiring, &game_state);
     // update_game_state();
     // SDL_Delay(time_left());
     // char c = getchar();
+    usleep(10000);
 
-    usleep(100000);
     next_time += TICK_INTERVAL;
   }
 }

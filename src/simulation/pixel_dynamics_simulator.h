@@ -13,6 +13,7 @@ int retrieve_rgb_for_particle(enum PARTICLE_TYPES particle_type);
 
 void simulate_sand_particle(
     int width,
+    int height,
     int x_coordinate,
     int y_coordinate,
     struct Simulated_Particle* simulated_particles
