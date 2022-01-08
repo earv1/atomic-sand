@@ -99,11 +99,14 @@ void game_loop(struct AtomicSandWiring *wiring) {
 
   int randomNum = 0;
   while (1) {
-    randomNum = rand() % 5;
+    randomNum = rand() % 3;
     if (randomNum == 1) {
       simulated_particle_array[0] = test_particle;
+      simulated_particle_array[WIN_WIDTH -1] = test_particle;
     } else if (randomNum == 2) {
       simulated_particle_array[WIN_WIDTH * 2 + WIN_WIDTH / 2] = test_particle;
+      simulated_particle_array[WIN_WIDTH * 2 + WIN_WIDTH / 4] = test_particle;
+      simulated_particle_array[WIN_WIDTH * 2 + (WIN_WIDTH / 4)*3] = test_particle;
     }
 
 
