@@ -16,9 +16,9 @@ Uint32 time_left(void);
 
 void game_loop(struct AtomicSandWiring * wiring);
 
-static void render_pixel_array(
-    Uint32 * pixelArray,
-    SDL_Texture * texture,
-    SDL_Renderer * renderer);
+// static void render_pixel_array(
+//     Uint32 * pixelArray,
+//     SDL_Texture * texture,
+//     SDL_Renderer * renderer);
 
 #endif  // SRC_GAME_LOOP_GAME_LOOP_H_

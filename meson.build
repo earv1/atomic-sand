@@ -1,5 +1,7 @@
 project('atomic_sand', 'c', default_options : ['c_std=c18'])
 
+add_project_arguments('-g',  language : 'c')
+
 cmake = import('cmake')
 
 # Configure the CMake project

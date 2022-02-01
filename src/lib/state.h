@@ -6,7 +6,7 @@
 #include "simulation_structures.h"
 
 struct Game_State {
-  struct Simulated_Particle *simulated_particles;
+  struct Simulated_Particle **simulated_particles;
 };
 
 #endif  // SRC_LIB_STATE_H_

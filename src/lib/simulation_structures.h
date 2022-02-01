@@ -3,15 +3,18 @@
 #ifndef SRC_LIB_SIMULATION_STRUCTURES_H_
 #define SRC_LIB_SIMULATION_STRUCTURES_H_
 
-  enum PARTICLE_TYPES {
-    PARTICLE_TYPE_EMPTY = 0,
-    PARTICLE_TYPE_SAND = 1
-  };
-  typedef enum PARTICLE_TYPES PARTICLE_TYPES;
+struct Simulated_Particle_Wiring {
+  int width;
+  int height;
+  struct Simulated_Particle* simulated_particles;
+};
 
-  struct Simulated_Particle {
-    PARTICLE_TYPES particle_type;
-  };
-
+struct Simulated_Particle {
+  int particle_id;
+  int rgb_value;
+  void (*Simulate_One_Step)(int width, int height, int x_coordinate,
+                            int y_coordinate,
+                            struct Simulated_Particle** simulated_particles);
+};
 
 #endif  // SRC_LIB_SIMULATION_STRUCTURES_H_

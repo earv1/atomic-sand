@@ -1,3 +1,6 @@
 [submodule "subprojects/libraries/sdl2"]
 	path = subprojects/sdl2old
 	url = git@github.com:libsdl-org/SDL.git
+[submodule "subprojects/libbacktrace"]
+	path = subprojects/libbacktrace
+	url = git@github.com:ianlancetaylor/libbacktrace.git

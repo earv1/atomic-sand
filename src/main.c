@@ -5,6 +5,10 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <execinfo.h>
+#include <unistd.h>
+
+
 
 #include "game_loop/game_loop.h"
 #include "lib/wiring.h"
@@ -13,7 +17,8 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
-void INThandler(int);
+void Int_Handler(int);
+void Seg_Handler(int);
 
 #define WIN_WIDTH 160
 #define WIN_HEIGHT 144
@@ -22,7 +27,8 @@ void INThandler(int);
 // main is where all program execution starts
 //
 int main(int argc, char **argv) {
-  signal(SIGINT, INThandler);
+  signal(SIGINT, Int_Handler);
+  signal(SIGSEGV, Seg_Handler);   // install our handler
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
     return 1;
@@ -90,7 +96,20 @@ int main(int argc, char **argv) {
   return 0;
 }
 
-void INThandler(int sig) {
+void Int_Handler(int sig) {
   signal(sig, SIG_IGN);
   exit(0);
+}
+
+void Seg_Handler(int sig) {
+  void *array[10];
+  size_t size;
+
+  // get void*'s for all entries on the stack
+  size = backtrace(array, 10);
+
+  // print out all the frames to stderr
+  backtrace_symbols_fd(array, size, STDERR_FILENO);
+  fprintf(stderr, "Error: signal %d:\n", sig);
+  exit(1);
 }
